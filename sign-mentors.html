@@ -1,11 +1,7 @@
+
 <html>
-
 <head>
-  <meta http-equiv="refresh" content="300">
-</head>
-
-<body>
-
+<meta http-equiv="refresh" content="300">
 <style TYPE="text/css">
 
   body  {
@@ -52,37 +48,57 @@ function prettyDate(n) {
   }
 }
 
+function prettyTime(date) {
+  hours = date.getHours();
+  AM_PM = "AM";
+
+  if(hours > 12) {
+    hours = hours - 12;
+    AM_PM = "PM";
+  }
+
+  minutes = date.getMinutes();
+
+  if(minutes < 10){
+    minutes = "0" + minutes;
+  }
+
+  return  hours + ":" + minutes + " " + AM_PM;
+}
+
 function buildItem(availability, index) {
   var date = new Date(availability.start_time);
 
   var mentor_name_html = "<span class='highlight_text'>" + availability.mentor_name + "</span> <br>";
 
   if (availability.mentor_url.charAt(0) == "@") {
+
     return "<li id='a"+ index +"'>" + mentor_name_html + " aka " + availability.mentor_url +
     "<br> on " +
     weekdays[date.getDay()] +
     " the " +
     prettyDate(date.getDate()) +
-    "</li>";}
+    "<br>at " + prettyTime(date) + "</li>";
 
-  else if (availability.mentor_url == "") {
+  } else if (availability.mentor_url == "") {
+
     return "<li id='a"+ index +"'>"+
       mentor_name_html +
       "<br> on " +
       weekdays[date.getDay()] +
       " the " +
       prettyDate(date.getDate()) +
-      "</li>";
-    }
+      "<br>at " + prettyTime(date) + "</li>";
 
-  else {
-  return "<li id='a"+ index +"'>"+
-    mentor_name_html +
-    " aka @" + availability.mentor_url + "<br> on " +
-    weekdays[date.getDay()] +
-    " the " +
-    prettyDate(date.getDate()) +
-    "</li>";
+  } else {
+
+    return "<li id='a"+ index +"'>"+
+      mentor_name_html +
+      " aka @" + availability.mentor_url + "<br> on " +
+      weekdays[date.getDay()] +
+      " the " +
+      prettyDate(date.getDate()) +
+      "<br>at " + prettyTime(date) + "</li>";
   }
 
 }
@@ -118,13 +134,11 @@ $.ajax({
     setInterval(rotater, 20000);
 })
 </script>
-
-
+</head>
+<body>
 <div id="main">
   <h1>Here are some people ready to mentor you.</h1>
   <h2 class="bottom-of-header">Sign up at <a href="http://mentoring.devbootcamp.com">mentoring.devbootcamp.com</a></h2>
   <ul id="availabilities"></ul>
 </div>
-
 </body>
-</html>
